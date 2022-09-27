@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using HogwartsPotions.Models;
+using HogwartsPotions.Data;
+using HogwartsPotions.Models.Dtos;
 using HogwartsPotions.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HogwartsPotions.Controllers
 {
@@ -23,30 +26,76 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPost]
-        public async  Task AddRoom([FromBody] Room room)
+        public async Task<IActionResult> AddRoom([FromBody] RoomDto roomDto)
         {
+            var room = new Room()
+            {
+                Capacity = roomDto.Capacity
+            };
+
             await _context.AddRoom(room);
+
+            return CreatedAtAction(
+                nameof(GetRoomById),
+                new { id = room.ID },
+                room);
         }
 
-        [HttpGet("/{id}")]
-        public async Task<Room> GetRoomById(long id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRoomById(long id)
         {
-            return await _context.GetRoom(id);
+            var room = await _context.GetRoom(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(room);
         }
 
-        [HttpPut("/{id}")]
-        public void UpdateRoomById(long id, [FromBody] Room updatedRoom)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateRoomById(long id, [FromBody] RoomDto roomDto)
         {
-            _context.Update(updatedRoom);
+            if (id != roomDto.ID)
+            {
+                return BadRequest();
+            }
+
+            var roomToUpdate = await _context.GetRoom(id);
+            if (roomToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            roomToUpdate.Capacity = roomDto.Capacity;
+
+            try
+            {
+                await _context.UpdateRoom(roomToUpdate);
+            }
+            catch (DbUpdateConcurrencyException) when (!_context.Rooms.Any(r => r.ID == id))
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
-        [HttpDelete("/{id}")]
-        public async Task DeleteRoomById(long id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRoomById(long id)
         {
-            await _context.DeleteRoom(id);
+            var room = await _context.GetRoom(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            await _context.DeleteRoom(room);
+
+            return NoContent();
         }
 
-        [HttpGet("/rat-owners")]
+        [HttpGet("rat-owners")]
         public async Task<List<Room>> GetRoomsForRatOwners()
         {
             return await _context.GetRoomsForRatOwners();
