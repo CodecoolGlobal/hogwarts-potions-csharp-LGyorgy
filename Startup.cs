@@ -26,6 +26,7 @@ namespace HogwartsPotions
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<IPotionService, PotionService>();
 
             services.AddControllersWithViews();
         }
