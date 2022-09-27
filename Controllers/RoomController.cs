@@ -54,7 +54,7 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRoomById(long id, RoomDto roomDto)
+        public async Task<IActionResult> UpdateRoomById(long id, [FromBody] RoomDto roomDto)
         {
             if (id != roomDto.ID)
             {
