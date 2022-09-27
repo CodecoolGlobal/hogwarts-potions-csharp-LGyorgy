@@ -53,7 +53,13 @@ public class HogwartsContext : DbContext
 
     public async Task DeleteRoom(long id)
     {
-        throw new NotImplementedException();
+        var room = await Rooms.FirstOrDefaultAsync(r => r.ID == id);
+        if (room == null)
+        {
+            throw new ArgumentException($"Room entry with an ID of {id} was not found");
+        }
+        Rooms.Remove(room);
+        await SaveChangesAsync();
     }
 
     public Task<List<Room>> GetRoomsForRatOwners()
