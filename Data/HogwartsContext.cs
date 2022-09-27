@@ -21,8 +21,11 @@ public class HogwartsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Student>().ToTable("Student");
-        modelBuilder.Entity<Room>().ToTable("Room");
+        modelBuilder.Entity<Student>()
+            .ToTable("Student");
+
+        modelBuilder.Entity<Room>()
+            .ToTable("Room");
     }
 
     public async Task AddRoom(Room room)
@@ -34,6 +37,7 @@ public class HogwartsContext : DbContext
     public Task<Room> GetRoom(long roomId)
     {
         var room = Rooms
+            .Include(r => r.Residents)
             .AsNoTracking()
             .FirstOrDefaultAsync(r => r.ID == roomId);
         return room;
@@ -41,7 +45,9 @@ public class HogwartsContext : DbContext
 
     public Task<List<Room>> GetAllRooms()
     {
-        return Rooms.ToListAsync();
+        return Rooms
+            .Include(r => r.Residents)
+            .ToListAsync();
     }
 
     public async Task UpdateRoom(Room room)
