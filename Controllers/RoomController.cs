@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HogwartsPotions.Data;
 using HogwartsPotions.Models.Dtos;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,17 +13,17 @@ namespace HogwartsPotions.Controllers
     [ApiController, Route("/room")]
     public class RoomController : ControllerBase
     {
-        private readonly HogwartsContext _context;
+        private readonly IRoomService _roomService;
 
-        public RoomController(HogwartsContext context)
+        public RoomController(IRoomService roomService)
         {
-            _context = context;
+            _roomService = roomService;
         }
 
         [HttpGet]
         public async Task<List<Room>> GetAllRooms()
         {
-            return await _context.GetAllRooms();
+            return await _roomService.GetAllRooms();
         }
 
         [HttpPost]
@@ -33,7 +34,7 @@ namespace HogwartsPotions.Controllers
                 Capacity = roomDto.Capacity
             };
 
-            await _context.AddRoom(room);
+            await _roomService.AddRoom(room);
 
             return CreatedAtAction(
                 nameof(GetRoomById),
@@ -44,7 +45,7 @@ namespace HogwartsPotions.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRoomById(long id)
         {
-            var room = await _context.GetRoom(id);
+            var room = await _roomService.GetRoom(id);
             if (room == null)
             {
                 return NotFound();
@@ -61,7 +62,7 @@ namespace HogwartsPotions.Controllers
                 return BadRequest();
             }
 
-            var roomToUpdate = await _context.GetRoom(id);
+            var roomToUpdate = await _roomService.GetRoom(id);
             if (roomToUpdate == null)
             {
                 return NotFound();
@@ -71,9 +72,9 @@ namespace HogwartsPotions.Controllers
 
             try
             {
-                await _context.UpdateRoom(roomToUpdate);
+                await _roomService.UpdateRoom(roomToUpdate);
             }
-            catch (DbUpdateConcurrencyException) when (!_context.Rooms.Any(r => r.ID == id))
+            catch (DbUpdateConcurrencyException) when (_roomService.GetRoom(id) == null)
             {
                 return NotFound();
             }
@@ -84,13 +85,13 @@ namespace HogwartsPotions.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoomById(long id)
         {
-            var room = await _context.GetRoom(id);
+            var room = await _roomService.GetRoom(id);
             if (room == null)
             {
                 return NotFound();
             }
 
-            await _context.DeleteRoom(room);
+            await _roomService.DeleteRoom(room);
 
             return NoContent();
         }
@@ -98,7 +99,7 @@ namespace HogwartsPotions.Controllers
         [HttpGet("rat-owners")]
         public async Task<List<Room>> GetRoomsForRatOwners()
         {
-            return await _context.GetRoomsForRatOwners();
+            return await _roomService.GetRoomsForRatOwners();
         }
     }
 }
