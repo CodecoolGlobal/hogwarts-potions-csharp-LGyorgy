@@ -10,7 +10,9 @@ namespace HogwartsPotions.Models.Entities
         public long ID { get; set; }
 
         public string Name { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public HouseType HouseType { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public PetType PetType { get; set; }
 
         [JsonIgnore]
