@@ -14,4 +14,5 @@ public class Potion
     public List<Ingredient> Ingredients { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public BrewingStatus BrewingStatus { get; set; }
+    public Recipe Recipe { get; set; }
 }
