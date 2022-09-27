@@ -9,4 +9,6 @@ public class Recipe
     public long ID { get; set; }
     public string Name { get; set; }
     public Student Brewer { get; set; }
+
+    public List<Ingredient> Ingredients { get; set; }
 }
