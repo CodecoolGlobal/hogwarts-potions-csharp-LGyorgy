@@ -32,9 +32,15 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<Room> GetRoomById(long id)
+        public async Task<IActionResult> GetRoomById(long id)
         {
-            return await _context.GetRoom(id);
+            var room = await _context.GetRoom(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(room);
         }
 
         [HttpPut("{id}")]
