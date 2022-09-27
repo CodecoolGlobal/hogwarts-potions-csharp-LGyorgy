@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HogwartsPotions.Data;
+using HogwartsPotions.Models.Dtos;
 using HogwartsPotions.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HogwartsPotions.Controllers
 {
@@ -35,9 +38,31 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPut("{id}")]
-        public void UpdateRoomById(long id, [FromBody] Room updatedRoom)
+        public async Task<IActionResult> UpdateRoomById(long id, RoomDto roomDto)
         {
-            _context.Update(updatedRoom);
+            if (id != roomDto.ID)
+            {
+                return BadRequest();
+            }
+
+            var roomToUpdate = await _context.GetRoom(id);
+            if (roomToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            roomToUpdate.Capacity = roomDto.Capacity;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) when (!_context.Rooms.Any(r => r.ID == id))
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

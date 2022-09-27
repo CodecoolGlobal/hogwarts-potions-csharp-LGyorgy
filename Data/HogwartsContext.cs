@@ -31,7 +31,8 @@ public class HogwartsContext : DbContext
 
     public Task<Room> GetRoom(long roomId)
     {
-        var room = Rooms.FirstOrDefaultAsync(r => r.ID == roomId);
+        var room = Rooms
+            .FirstOrDefaultAsync(r => r.ID == roomId);
         return room;
     }
 
