@@ -25,7 +25,8 @@ public class HogwartsContext : DbContext
 
     public async Task AddRoom(Room room)
     {
-        throw new NotImplementedException();
+        await Rooms.AddAsync(room);
+        await SaveChangesAsync();
     }
 
     public Task<Room> GetRoom(long roomId)
