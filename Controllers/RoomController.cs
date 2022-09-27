@@ -74,7 +74,7 @@ namespace HogwartsPotions.Controllers
                 return NotFound();
             }
 
-            await _context.DeleteRoom(id);
+            await _context.DeleteRoom(room);
 
             return NoContent();
         }

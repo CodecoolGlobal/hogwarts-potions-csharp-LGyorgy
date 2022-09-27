@@ -51,13 +51,8 @@ public class HogwartsContext : DbContext
         await SaveChangesAsync();
     }
 
-    public async Task DeleteRoom(long id)
+    public async Task DeleteRoom(Room room)
     {
-        var room = await Rooms.FirstOrDefaultAsync(r => r.ID == id);
-        if (room == null)
-        {
-            throw new ArgumentException($"Room entry with an ID of {id} was not found");
-        }
         Rooms.Remove(room);
         await SaveChangesAsync();
     }
