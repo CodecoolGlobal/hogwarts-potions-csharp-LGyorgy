@@ -35,7 +35,7 @@ public class HogwartsContext : DbContext
 
     public Task<List<Room>> GetAllRooms()
     {
-        throw new NotImplementedException();
+        return Rooms.ToListAsync();
     }
 
     public async Task UpdateRoom(Room room)
