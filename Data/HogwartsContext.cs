@@ -36,7 +36,7 @@ public class HogwartsContext : DbContext
         modelBuilder.Entity<Ingredient>()
             .ToTable("Ingredient");
 
-        modelBuilder.Entity<Ingredient>()
+        modelBuilder.Entity<Potion>()
             .ToTable("Potion");
     }
 }
