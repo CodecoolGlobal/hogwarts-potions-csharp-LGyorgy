@@ -12,4 +12,6 @@ public class Ingredient
 
     [JsonIgnore]
     public List<Recipe> Recipes { get; set; }
+    [JsonIgnore]
+    public List<Potion> Potions { get; set; }
 }
