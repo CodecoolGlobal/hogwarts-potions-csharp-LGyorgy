@@ -39,12 +39,41 @@ public class DbInitializer
             context.Rooms.Add(room);
         }
 
-        context.SaveChanges();
-
         students[0].Room = rooms[0];
         students[1].Room = rooms[1];
         students[2].Room = rooms[2];
         students[3].Room = rooms[3];
+
+        var ingredients = new Ingredient[]
+        {
+            new Ingredient{Name = "Bloodroot"},
+            new Ingredient{Name = "Mandrake"},
+            new Ingredient{Name = "Bone"},
+            new Ingredient{Name = "Jewelweed"},
+            new Ingredient{Name = "Moondew"}
+        };
+        foreach (var ingredient in ingredients)
+        {
+            context.Ingredients.Add(ingredient);
+        }
+
+        var recipes = new Recipe[]
+        {
+            new Recipe { Brewer = students[0], Ingredients = ingredients.ToList(), Name = "First Potion Recipe" },
+        };
+        foreach (var recipe in recipes)
+        {
+            context.Recipes.Add(recipe);
+        }
+
+        var potions = new Potion[]
+        {
+            new Potion { Brewer = students[0], Recipe = recipes[0], Ingredients = ingredients.ToList(), Name = "First Potion", BrewingStatus = BrewingStatus.Discovery},
+        };
+        foreach (var potion in potions)
+        {
+            context.Potions.Add(potion);
+        }
 
         context.SaveChanges();
     }
