@@ -1,4 +1,6 @@
 using HogwartsPotions.Data;
+using HogwartsPotions.Services;
+using HogwartsPotions.Services.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,8 @@ namespace HogwartsPotions
         {
             services.AddDbContext<HogwartsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IRoomService, RoomService>();
 
             services.AddControllersWithViews();
         }
