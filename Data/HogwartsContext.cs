@@ -31,7 +31,8 @@ public class HogwartsContext : DbContext
 
     public Task<Room> GetRoom(long roomId)
     {
-        throw new NotImplementedException();
+        var room = Rooms.FirstOrDefaultAsync(r => r.ID == roomId);
+        return room;
     }
 
     public Task<List<Room>> GetAllRooms()
