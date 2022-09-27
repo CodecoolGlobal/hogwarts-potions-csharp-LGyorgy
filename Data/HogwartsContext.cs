@@ -43,7 +43,11 @@ public class HogwartsContext : DbContext
 
     public async Task UpdateRoom(Room room)
     {
-        throw new NotImplementedException();
+        if (Entry(room).State == EntityState.Detached)
+        {
+            Entry(room).State = EntityState.Modified;
+        }
+        await SaveChangesAsync();
     }
 
     public async Task DeleteRoom(long id)

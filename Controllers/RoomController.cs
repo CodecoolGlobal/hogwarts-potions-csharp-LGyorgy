@@ -55,7 +55,7 @@ namespace HogwartsPotions.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.UpdateRoom(roomToUpdate);
             }
             catch (DbUpdateConcurrencyException) when (!_context.Rooms.Any(r => r.ID == id))
             {
