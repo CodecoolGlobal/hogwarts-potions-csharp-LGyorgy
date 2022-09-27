@@ -32,6 +32,7 @@ public class HogwartsContext : DbContext
     public Task<Room> GetRoom(long roomId)
     {
         var room = Rooms
+            .AsNoTracking()
             .FirstOrDefaultAsync(r => r.ID == roomId);
         return room;
     }
