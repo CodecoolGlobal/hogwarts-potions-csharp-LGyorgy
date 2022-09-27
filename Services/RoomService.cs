@@ -58,6 +58,7 @@ public class RoomService : IRoomService
     public Task<List<Room>> GetRoomsForRatOwners()
     {
         return _context.Rooms
+            .Include(r => r.Residents)
             .Where(r => r.Residents
                 .All(s => s.PetType != PetType.Cat && s.PetType == PetType.Owl)
             )
