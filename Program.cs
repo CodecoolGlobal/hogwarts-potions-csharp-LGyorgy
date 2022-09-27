@@ -19,7 +19,7 @@ namespace HogwartsPotions
                 try
                 {
                     var context = services.GetRequiredService<HogwartsContext>();
-                    context.Database.EnsureCreated();
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {
