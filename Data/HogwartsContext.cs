@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace HogwartsPotions.Data;
@@ -59,6 +61,10 @@ public class HogwartsContext : DbContext
 
     public Task<List<Room>> GetRoomsForRatOwners()
     {
-        throw new NotImplementedException();
+        return Rooms
+            .Where(r => r.Residents
+                .All(s => s.PetType != PetType.Cat && s.PetType == PetType.Owl)
+            )
+            .ToListAsync();
     }
 }
