@@ -135,6 +135,7 @@ public class PotionService : IPotionService
         return await _context.Potions
             .Include(p => p.Ingredients)
             .Include(p => p.Brewer)
+                .ThenInclude(s => s.Recipes)
             .FirstOrDefaultAsync(p => p.ID == potionId);
     }
 
@@ -165,10 +166,58 @@ public class PotionService : IPotionService
 
         if (potion.Ingredients.Count >= MaxIngredientsForPotions)
         {
-            //TODO replica check
-            potion.BrewingStatus = BrewingStatus.Discovery;
+            await FinishPotion(potion);
         }
 
         await _context.SaveChangesAsync();
+    }
+
+    private async Task<Recipe> GetRecipeByIngredients(List<Ingredient> ingredients)
+    {
+        if (ingredients.Count != MaxIngredientsForPotions)
+        {
+            throw new ArgumentException($"Ingredient list must contain {MaxIngredientsForPotions} items.");
+        }
+
+        var recipe = await _context.Recipes
+            .Include(r => r.Ingredients)
+            .Include(r => r.Brewer)
+            .Where(r => r.Ingredients
+                .All(i => ingredients.Contains(i)))
+            .FirstOrDefaultAsync();
+
+        return recipe;
+    }
+
+    private async Task FinishPotion(Potion potion)
+    {
+        if (potion.BrewingStatus != BrewingStatus.Brew)
+        {
+            throw new ArgumentException("Potion is already finished.");
+        }
+
+        if (potion.Ingredients.Count != MaxIngredientsForPotions)
+        {
+            throw new ArgumentException(
+                $"The number of ingredients in the potion should be exactly {MaxIngredientsForPotions}"
+                );
+        }
+
+        var brewingStatus = BrewingStatus.Replica;
+        var recipe = await GetRecipeByIngredients(potion.Ingredients);
+        if (recipe == null)
+        {
+            brewingStatus = BrewingStatus.Discovery;
+            recipe = new Recipe
+            {
+                Brewer = potion.Brewer,
+                Ingredients = potion.Ingredients,
+                Name = $"{potion.Brewer.Name}'s discovery #{potion.Brewer.Recipes.Count + 1}"
+            };
+        }
+
+        potion.Name = $"A bottle of {recipe.Name}";
+        potion.BrewingStatus = brewingStatus;
+        potion.Recipe = recipe;
     }
 }
