@@ -95,4 +95,18 @@ public class PotionService : IPotionService
         await _context.Potions.AddAsync(potion);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<Potion>> GetStudentCookbook(long studentId)
+    {
+        var student = await _context.Students
+            .Include(s => s.Potions)
+            .FirstOrDefaultAsync(s => s.ID == studentId);
+
+        if (student == null)
+        {
+            throw new ArgumentException("StudentID does not correspond with any students.");
+        }
+
+        return student.Potions;
+    }
 }

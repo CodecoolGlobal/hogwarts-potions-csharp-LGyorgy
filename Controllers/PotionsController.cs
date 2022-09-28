@@ -35,5 +35,19 @@ namespace HogwartsPotions.Controllers
             return Created(nameof(CreatePotion), potion);
 
         }
+
+        [HttpGet("students/{studentId}")]
+        public async Task<ActionResult<List<Potion>>> GetStudentCookbook(long studentId)
+        {
+            try
+            {
+                var cookbook = await _potionService.GetStudentCookbook(studentId);
+                return Ok(cookbook);
+            }
+            catch (ArgumentException e)
+            {
+                return NotFound();
+            }
+        }
     }
 }
