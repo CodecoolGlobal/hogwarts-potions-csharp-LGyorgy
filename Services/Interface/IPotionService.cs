@@ -11,4 +11,5 @@ public interface IPotionService
     Task<Potion> CreatePotionFromDto(PotionDto potionDto);
     Task AddPotion(Potion potion);
     Task<List<Potion>> GetStudentCookbook(long studentId);
+    Task<Potion> StartBrewFromDto(PotionDto potionDto);
 }

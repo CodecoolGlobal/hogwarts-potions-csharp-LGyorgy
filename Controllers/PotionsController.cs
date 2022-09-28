@@ -49,5 +49,25 @@ namespace HogwartsPotions.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost("brew")]
+        public async Task<ActionResult<Potion>> StartBrewing(PotionDto potionDto)
+        {
+            if (potionDto.StudentID == null)
+            {
+                return BadRequest("JSON must contain a 'studentId' property.");
+            }
+
+            try
+            {
+                var potion = await _potionService.StartBrewFromDto(potionDto);
+                await _potionService.AddPotion(potion);
+                return Created(nameof(StartBrewing), potion);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

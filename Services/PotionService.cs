@@ -109,4 +109,24 @@ public class PotionService : IPotionService
 
         return student.Potions;
     }
+
+    public async Task<Potion> StartBrewFromDto(PotionDto potionDto)
+    {
+        var student = await _context.Students
+            .FirstOrDefaultAsync(s => s.ID == potionDto.StudentID);
+
+        if (student is null)
+        {
+            throw new ArgumentException("StudentID does not correspond with any students.");
+        }
+
+        var potion = new Potion
+        {
+            Brewer = student,
+            BrewingStatus = BrewingStatus.Brew,
+            Ingredients = new List<Ingredient>()
+        };
+
+        return potion;
+    }
 }
