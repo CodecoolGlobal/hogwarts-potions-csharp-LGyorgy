@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HogwartsPotions.Models.Entities;
 using HogwartsPotions.Services.Interface;
@@ -22,6 +23,12 @@ namespace HogwartsPotions.Controllers
         public async Task<List<Potion>> GetAllPotions()
         {
             return await _potionService.GetAllPotions();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Potion>> CreatePotion(Potion potion)
+        {
+            throw new NotImplementedException();
         }
     }
 }
