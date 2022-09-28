@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HogwartsPotions.Models.Dtos;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Enums;
 using HogwartsPotions.Services.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -68,6 +69,24 @@ namespace HogwartsPotions.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpPut("{potionId}/add")]
+        public async Task<ActionResult<Potion>> AddIngredient(long potionId, IngredientDto ingredient)
+        {
+            var potion = await _potionService.GetPotion(potionId);
+
+            if (potion is null)
+            {
+                return NotFound($"There's no potion with an id of {potionId}");
+            }
+
+            if (potion.BrewingStatus != BrewingStatus.Brew)
+            {
+                return BadRequest("Ingredient can't be added, because the potion is already done.");
+            }
+
+            return potion;
         }
     }
 }
