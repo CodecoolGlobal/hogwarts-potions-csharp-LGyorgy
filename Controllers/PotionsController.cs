@@ -86,9 +86,15 @@ namespace HogwartsPotions.Controllers
                 return BadRequest("Ingredient can't be added, because the potion is already done.");
             }
 
-            await _potionService.AddIngredient(potion, ingredient);
-
-            return potion;
+            try
+            {
+                await _potionService.AddIngredient(potion, ingredient);
+                return potion;
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

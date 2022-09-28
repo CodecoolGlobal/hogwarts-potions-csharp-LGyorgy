@@ -162,6 +162,11 @@ public class PotionService : IPotionService
             throw new ArgumentException("Ingredient can only be added to potions with Brew BrewingStatus");
         }
 
+        if (potion.Ingredients.Contains(ingredient))
+        {
+            throw new ArgumentException($"{ingredient.Name} ingredient is already in the potion.");
+        }
+
         potion.Ingredients.Add(ingredient);
 
         if (potion.Ingredients.Count >= MaxIngredientsForPotions)
