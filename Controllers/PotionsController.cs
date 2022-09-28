@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HogwartsPotions.Models.Dtos;
 using HogwartsPotions.Models.Entities;
 using HogwartsPotions.Services.Interface;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Potion>> CreatePotion(Potion potion)
+        public async Task<ActionResult<Potion>> CreatePotion(PotionDto potionDto)
         {
             throw new NotImplementedException();
         }
