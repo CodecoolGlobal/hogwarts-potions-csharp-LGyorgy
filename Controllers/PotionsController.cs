@@ -96,5 +96,20 @@ namespace HogwartsPotions.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpGet("{potionId}/help")]
+        public async Task<ActionResult<List<Recipe>>> GetKnownRecipes(long potionId)
+        {
+            var potion = await _potionService.GetPotion(potionId);
+
+            if (potion is null)
+            {
+                return NotFound($"There's no potion with the ID of {potionId}.");
+            }
+
+            var recipes = await _potionService.GetValidRecipes(potion.Ingredients);
+
+            return Ok(recipes);
+        }
     }
 }

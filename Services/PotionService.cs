@@ -177,6 +177,20 @@ public class PotionService : IPotionService
         await _context.SaveChangesAsync();
     }
 
+    public async Task<List<Recipe>> GetValidRecipes(List<Ingredient> potionIngredients)
+    {
+        var query = _context.Recipes.AsQueryable();
+        foreach (var ingredient in potionIngredients)
+        {
+            query = query.Where(r => r.Ingredients.Contains(ingredient));
+        }
+
+        query = query.Include(r => r.Ingredients);
+
+        var recipes = await query.ToListAsync();
+        return recipes;
+    }
+
     private async Task<Recipe> GetRecipeByIngredients(List<Ingredient> ingredients)
     {
         if (ingredients.Count != MaxIngredientsForPotions)
