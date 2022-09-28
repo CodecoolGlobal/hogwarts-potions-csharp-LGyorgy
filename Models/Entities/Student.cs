@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using HogwartsPotions.Models.Enums;
@@ -19,6 +20,11 @@ namespace HogwartsPotions.Models.Entities
         public Room Room { get; set; }
 
         [NotMapped]
-        public long RoomId => Room.ID;
+        public long? RoomId => Room is null ? null : Room.ID;
+
+        [JsonIgnore]
+        public List<Recipe> Recipes { get; set; }
+        [JsonIgnore]
+        public List<Potion> Potions { get; set; }
     }
 }

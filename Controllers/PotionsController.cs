@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using HogwartsPotions.Models.Dtos;
 using HogwartsPotions.Models.Entities;
 using HogwartsPotions.Services.Interface;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +24,16 @@ namespace HogwartsPotions.Controllers
         public async Task<List<Potion>> GetAllPotions()
         {
             return await _potionService.GetAllPotions();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Potion>> CreatePotion(PotionDto potionDto)
+        {
+            var potion = await _potionService.CreatePotionFromDto(potionDto);
+            await _potionService.AddPotion(potion);
+
+            return Created(nameof(CreatePotion), potion);
+
         }
     }
 }
