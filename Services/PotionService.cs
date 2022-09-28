@@ -137,4 +137,38 @@ public class PotionService : IPotionService
             .Include(p => p.Brewer)
             .FirstOrDefaultAsync(p => p.ID == potionId);
     }
+
+    public async Task AddIngredient(Potion potion, IngredientDto ingredientDto)
+    {
+        var ingredient = await _context.Ingredients
+            .FirstOrDefaultAsync(i => i.Name == ingredientDto.Name);
+
+        if (ingredient is null)
+        {
+            ingredient = new Ingredient
+            {
+                Name = ingredientDto.Name
+            };
+        }
+
+        await AddIngredient(potion, ingredient);
+    }
+
+    public async Task AddIngredient(Potion potion, Ingredient ingredient)
+    {
+        if (potion.BrewingStatus != BrewingStatus.Brew)
+        {
+            throw new ArgumentException("Ingredient can only be added to potions with Brew BrewingStatus");
+        }
+
+        potion.Ingredients.Add(ingredient);
+
+        if (potion.Ingredients.Count >= MaxIngredientsForPotions)
+        {
+            //TODO replica check
+            potion.BrewingStatus = BrewingStatus.Discovery;
+        }
+
+        await _context.SaveChangesAsync();
+    }
 }
