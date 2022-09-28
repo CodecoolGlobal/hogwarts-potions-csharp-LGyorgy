@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HogwartsPotions.Models.Dtos;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Enums;
 using HogwartsPotions.Services.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,67 @@ namespace HogwartsPotions.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpPost("brew")]
+        public async Task<ActionResult<Potion>> StartBrewing(PotionDto potionDto)
+        {
+            if (potionDto.StudentID == null)
+            {
+                return BadRequest("JSON must contain a 'studentId' property.");
+            }
+
+            try
+            {
+                var potion = await _potionService.StartBrewFromDto(potionDto);
+                await _potionService.AddPotion(potion);
+                return Created(nameof(StartBrewing), potion);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("{potionId}/add")]
+        public async Task<ActionResult<Potion>> AddIngredient(long potionId, IngredientDto ingredient)
+        {
+            var potion = await _potionService.GetPotion(potionId);
+
+            if (potion is null)
+            {
+                return NotFound($"There's no potion with an id of {potionId}");
+            }
+
+            if (potion.BrewingStatus != BrewingStatus.Brew)
+            {
+                return BadRequest("Ingredient can't be added, because the potion is already done.");
+            }
+
+            try
+            {
+                await _potionService.AddIngredient(potion, ingredient);
+                return potion;
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("{potionId}/help")]
+        public async Task<ActionResult<List<Recipe>>> GetKnownRecipes(long potionId)
+        {
+            var potion = await _potionService.GetPotion(potionId);
+
+            if (potion is null)
+            {
+                return NotFound($"There's no potion with the ID of {potionId}.");
+            }
+
+            var recipes = await _potionService.GetValidRecipes(potion.Ingredients);
+
+            return Ok(recipes);
         }
     }
 }
