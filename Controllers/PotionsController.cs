@@ -29,7 +29,11 @@ namespace HogwartsPotions.Controllers
         [HttpPost]
         public async Task<ActionResult<Potion>> CreatePotion(PotionDto potionDto)
         {
-            throw new NotImplementedException();
+            var potion = await _potionService.CreatePotionFromDto(potionDto);
+            await _potionService.AddPotion(potion);
+
+            return Created(nameof(CreatePotion), potion);
+
         }
     }
 }
