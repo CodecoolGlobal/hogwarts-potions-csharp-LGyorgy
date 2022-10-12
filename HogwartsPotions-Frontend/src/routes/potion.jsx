@@ -16,7 +16,7 @@ const action = async ({request, params}) => {
     return potion;
 }
 
-const Potions = () => {
+const Potion = () => {
     const potion = useLoaderData();
 
     const setPotion = () => {
@@ -31,5 +31,5 @@ const Potions = () => {
     );
 }
 
-export default Potions;
+export default Potion;
 export { loader, action };
