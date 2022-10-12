@@ -5,21 +5,23 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
 const Root = () => {
-    return <>
-        <Navbar bg="dark" variant="dark">
-            <Container>
-                <Navbar.Brand>Hogwarts Potions</Navbar.Brand>
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link href="/">Brew potion</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
+    return (
+        <>
+            <Navbar bg="dark" variant="dark">
+                <Container>
+                    <Navbar.Brand>Hogwarts Potions</Navbar.Brand>
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="/">Brew potion</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <Container id="content">
+                <Outlet />
             </Container>
-        </Navbar>
-        <Container id="content">
-            <Outlet />
-        </Container>
-    </>
+        </>
+    );
 }
 
 export default Root;
