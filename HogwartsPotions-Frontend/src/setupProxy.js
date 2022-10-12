@@ -1,7 +1,7 @@
 ﻿const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const context = [
-    "/potions/brew",
+    "/potions/**"
 ];
 
 module.exports = function (app) {
