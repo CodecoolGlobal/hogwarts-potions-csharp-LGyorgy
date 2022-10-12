@@ -7,7 +7,7 @@ import {
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Root from './routes/root';
-import Brewing from './components/brewing';
+import Brew, { action as brewAction } from './routes/brew';
 import Potions, { loader as potionsLoader } from './routes/potions';
 
 const router = createBrowserRouter([
@@ -15,7 +15,11 @@ const router = createBrowserRouter([
       path: "/",
       element: <Root />,
       children: [
-        { index: true, element: <Brewing />},
+        {
+            index: true,
+            element: <Brew />,
+            action: brewAction,
+        },
         {
             path: "/potions/:potionId",
             loader: potionsLoader,
