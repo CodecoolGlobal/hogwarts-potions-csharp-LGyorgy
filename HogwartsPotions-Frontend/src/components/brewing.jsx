@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CreateNewPotion from "./potionCreator";
 import IngredientAdder from "./ingredientAdder";
 import PotionDetails from "./potionDetails";
