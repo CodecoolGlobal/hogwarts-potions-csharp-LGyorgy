@@ -27,6 +27,19 @@ namespace HogwartsPotions.Controllers
             return await _potionService.GetAllPotions();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Potion>> GetPotion([FromRoute] int id)
+        {
+            var potion = await _potionService.GetPotion(id);
+
+            if (potion is null)
+            {
+                return NotFound($"No potion with an id of {id} can be found.");
+            }
+
+            return Ok(potion);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Potion>> CreatePotion(PotionDto potionDto)
         {
