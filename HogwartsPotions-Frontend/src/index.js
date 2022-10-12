@@ -6,12 +6,16 @@ import {
   } from "react-router-dom";
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import Root from './routes/root';
 import Brewing from './components/brewing';
 
 const router = createBrowserRouter([
     {
       path: "/",
-      element: <Brewing />,
+      element: <Root />,
+      children: [
+        { index: true, element: <Brewing />}
+      ]
     },
   ]);
 
