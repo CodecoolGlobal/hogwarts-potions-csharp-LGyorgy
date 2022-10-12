@@ -1,13 +1,18 @@
 import { Outlet } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
 
 const Root = () => {
     return <>
-        <nav class="navbar navbar-light bg-light">
-            <span class="navbar-brand mb-0 h1">Hogwarts Potions</span>
-        </nav>
-        <div id="content">
+        <Navbar bg="light">
+            <Container>
+                <Navbar.Brand>Hogwarts Potions</Navbar.Brand>
+            </Container>
+        </Navbar>
+        <Container id="content">
             <Outlet />
-        </div>
+        </Container>
     </>
 }
 
