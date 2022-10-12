@@ -20,4 +20,23 @@ const brewPotion = async (studentId) => {
     return potion;
 }
 
-export { getPotion, brewPotion };
+const addIngredient = async (potionId, ingredientName) => {
+    const url = `/api/potions/${potionId}/add`;
+    const options = {
+        method: "PUT",
+        headers: {
+            'Content-Type': "application/json"
+        },
+        body: JSON.stringify({ name: ingredientName })
+    };
+    const potion = await fetch(url, options)
+        .then(r => r.json());
+
+    return potion;
+}
+
+export {
+    getPotion,
+    brewPotion,
+    addIngredient
+};

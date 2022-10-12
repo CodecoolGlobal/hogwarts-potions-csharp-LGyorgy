@@ -1,41 +1,23 @@
 import { useState } from "react";
+import { useFetcher } from "react-router-dom";
 
-const IngredientAdder = ({ potion, handleNewPotion }) => {
-    const [value, setValue] = useState("");
+const IngredientAdder = ({ potion }) => {
+    const [ingredentName, setIngredientName] = useState("");
 
-    const onChange = (event) => {
-        setValue(event.target.value);
-    };
-
-    const onSubmit = async (event) => {
-        event.preventDefault();
-        const name = value;
-        const url = `potions/${potion.id}/add`;
-        const options = {
-            method: "PUT",
-            headers: {
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify({ name })
-        };
-        const newPotion = await fetch(url, options)
-            .then(r => r.json());
-        handleNewPotion(newPotion);
-        setValue("");
-    }
+    const fetcher = useFetcher();
 
     return (
         <>
             <h2>Add ingredient</h2>
-            <form onSubmit={onSubmit}>
+            <fetcher.Form id="ingredientAdderForm" onSubmit={() => setIngredientName("")} method="PUT">
                 <ul>
                     <li>
                         <label htmlFor="ingredient">Ingredient: </label>
-                        <input value={value} onChange={onChange} type="text"></input>
+                        <input value={ingredentName} onChange={e => setIngredientName(e.target.value)} name="ingredientName" type="text"></input>
                     </li>
                 </ul>
                 <button type="submit">Add ingredient</button>
-            </form>
+            </fetcher.Form>
         </>
     );
 }

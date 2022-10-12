@@ -1,10 +1,19 @@
 import { useLoaderData } from "react-router-dom";
-import { getPotion } from "../services/potionService";
+import { addIngredient, getPotion } from "../services/potionService";
 import IngredientAdder from "../components/ingredientAdder";
 import PotionDetails from "../components/potionDetails";
 
 const loader = async ({ params }) => {
     return await getPotion(params.potionId);
+}
+
+const action = async ({request, params}) => {
+    const formData = await request.formData();
+
+    const name = formData.get("ingredientName");
+
+    const potion = await addIngredient(params.potionId, name);
+    return potion;
 }
 
 const Potions = () => {
@@ -17,10 +26,10 @@ const Potions = () => {
     return (
         <>
             <PotionDetails potion={potion}/>
-            <IngredientAdder potion={potion} handleNewPotion={setPotion}/>
+            <IngredientAdder/>
         </>
     );
 }
 
 export default Potions;
-export { loader };
+export { loader, action };

@@ -8,7 +8,10 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Root from './routes/root';
 import Brew, { action as brewAction } from './routes/brew';
-import Potions, { loader as potionsLoader } from './routes/potions';
+import Potions, {
+    loader as potionsLoader,
+    action as potionsAction,
+} from './routes/potions';
 
 const router = createBrowserRouter([
     {
@@ -22,9 +25,10 @@ const router = createBrowserRouter([
         },
         {
             path: "/potions/:potionId",
+            element: <Potions />,
             loader: potionsLoader,
-            element: <Potions />
-        }
+            action: potionsAction
+        },
       ]
     },
   ]);
