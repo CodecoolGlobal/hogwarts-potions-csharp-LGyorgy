@@ -1,38 +1,23 @@
 import { useEffect, useState } from "react";
 import CreateNewPotion from "./potionCreator";
 import IngredientAdder from "./ingredientAdder";
+import PotionDetails from "./potionDetails";
 
 const Brewing = () => {
     const [potion, setPotion] = useState(null);
 
-    useEffect(() => {
-        const fetchTest = async () => {
-            const url = "potions/brew";
-            const testData = await fetch(url, {
-                method: "Post",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ studentId: 1 })
-            })
-            .then(r => r.json())
-            .then(data =>  console.log(data));
-        }
-        fetchTest();
-    });
-
-    
     if (!potion) {
         return (
             <>
-                <CreateNewPotion />
+                <CreateNewPotion handleNewPotion={setPotion} />
             </>
         );
     }
 
     return (
         <>
-            <IngredientAdder potion={potion} />
+            <PotionDetails potion={potion}/>
+            <IngredientAdder potion={potion} handleNewPotion={setPotion}/>
         </>
     );
 }
