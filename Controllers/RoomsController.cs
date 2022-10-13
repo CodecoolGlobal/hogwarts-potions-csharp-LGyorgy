@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HogwartsPotions.Controllers
 {
-    [ApiController, Route("/[controller]")]
+    [ApiController, Route("api/[controller]")]
     public class RoomsController : ControllerBase
     {
         private readonly IRoomService _roomService;

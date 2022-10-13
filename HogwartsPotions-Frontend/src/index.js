@@ -1,13 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {
+    createBrowserRouter,
+    RouterProvider,
+  } from "react-router-dom";
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Brewing from './components/brewing';
+import Root from './routes/root';
+import Brew, { action as brewAction } from './routes/brew';
+import Potion, {
+    loader as potionLoader,
+    action as potionAction,
+} from './routes/potion';
+import { action as recipeRenameAction } from './components/newRecipeNameSetter';
+
+const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Root />,
+      children: [
+        {
+            index: true,
+            element: <Brew />,
+            action: brewAction,
+        },
+        {
+            path: "/potions/:potionId",
+            element: <Potion />,
+            loader: potionLoader,
+            action: potionAction
+        },
+        {
+            path: "/recipes/:recipeId/rename",
+            action: recipeRenameAction
+        },
+      ]
+    },
+  ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <Brewing />
+        <RouterProvider router={router} />
     </React.StrictMode>
 );
 

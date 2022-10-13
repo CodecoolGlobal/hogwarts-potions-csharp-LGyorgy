@@ -136,6 +136,7 @@ public class PotionService : IPotionService
             .Include(p => p.Ingredients)
             .Include(p => p.Brewer)
                 .ThenInclude(s => s.Recipes)
+            .Include(p => p.Recipe)
             .FirstOrDefaultAsync(p => p.ID == potionId);
     }
 
@@ -185,10 +186,29 @@ public class PotionService : IPotionService
             query = query.Where(r => r.Ingredients.Contains(ingredient));
         }
 
-        query = query.Include(r => r.Ingredients);
+        query = query
+            .Include(r => r.Ingredients)
+            .Include(r => r.Brewer);
 
         var recipes = await query.ToListAsync();
         return recipes;
+    }
+
+    public async Task<Recipe> GetRecipe(long recipeId)
+    {
+        return await _context.Recipes
+            .Include(p => p.Ingredients)
+            .Include(p => p.Brewer)
+            .FirstOrDefaultAsync(r => r.ID == recipeId);
+    }
+
+    public async Task UpdateRecipe(Recipe recipe)
+    {
+        if (_context.Entry(recipe).State == EntityState.Detached)
+        {
+            _context.Entry(recipe).State = EntityState.Modified;
+        }
+        await _context.SaveChangesAsync();
     }
 
     private async Task<Recipe> GetRecipeByIngredients(List<Ingredient> ingredients)

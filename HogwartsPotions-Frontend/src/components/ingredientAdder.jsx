@@ -1,41 +1,33 @@
 import { useState } from "react";
+import { useFetcher } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+import Form from 'react-bootstrap/Form';
 
-const IngredientAdder = ({ potion, handleNewPotion }) => {
-    const [value, setValue] = useState("");
+const IngredientAdder = ({ potion }) => {
+    const [ingredentName, setIngredientName] = useState("");
 
-    const onChange = (event) => {
-        setValue(event.target.value);
-    };
-
-    const onSubmit = async (event) => {
-        event.preventDefault();
-        const name = value;
-        const url = `potions/${potion.id}/add`;
-        const options = {
-            method: "PUT",
-            headers: {
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify({ name })
-        };
-        const newPotion = await fetch(url, options)
-            .then(r => r.json());
-        handleNewPotion(newPotion);
-        setValue("");
-    }
+    const fetcher = useFetcher();
 
     return (
         <>
-            <h2>Add ingredient</h2>
-            <form onSubmit={onSubmit}>
-                <ul>
-                    <li>
-                        <label htmlFor="ingredient">Ingredient: </label>
-                        <input value={value} onChange={onChange} type="text"></input>
-                    </li>
-                </ul>
-                <button type="submit">Add ingredient</button>
-            </form>
+            <h5>Add ingredient</h5>
+            <fetcher.Form id="ingredientAdderForm" onSubmit={() => setIngredientName("")} method="PUT">
+                <Form.Group className="mb-3" controlId="formIngredientName">
+                    <Form.Label>Ingredient: </Form.Label>
+                    <Form.Control value={ingredentName} onChange={e => setIngredientName(e.target.value)} name="ingredientName" type="text" placeholder="Enter ingredient name" />
+                </Form.Group>
+                <Button className="shadow-sm" variant="primary" type="submit" disabled={fetcher.state !== "idle" ? true : false}>
+                    {fetcher.state !== "idle" && <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                    />}
+                    {fetcher.state === "idle" ? "Add ingredient" : "Adding ingredient..."}
+                </Button>
+            </fetcher.Form>
         </>
     );
 }

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HogwartsPotions.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PotionsController : ControllerBase
     {
@@ -25,6 +25,19 @@ namespace HogwartsPotions.Controllers
         public async Task<List<Potion>> GetAllPotions()
         {
             return await _potionService.GetAllPotions();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Potion>> GetPotion([FromRoute] int id)
+        {
+            var potion = await _potionService.GetPotion(id);
+
+            if (potion is null)
+            {
+                return NotFound($"No potion with an id of {id} can be found.");
+            }
+
+            return Ok(potion);
         }
 
         [HttpPost]
@@ -110,6 +123,23 @@ namespace HogwartsPotions.Controllers
             var recipes = await _potionService.GetValidRecipes(potion.Ingredients);
 
             return Ok(recipes);
+        }
+
+        [HttpPatch("/api/recipes/{recipeId}/rename")]
+        public async Task<ActionResult<List<Recipe>>> RenameRecipe(long recipeId, [FromBody] string name)
+        {
+            var recipe = await _potionService.GetRecipe(recipeId);
+
+            if (recipe is null)
+            {
+                return NotFound($"There's no recipe with the ID of {recipeId}.");
+            }
+
+            recipe.Name = name;
+
+            await _potionService.UpdateRecipe(recipe);
+
+            return Ok();
         }
     }
 }
