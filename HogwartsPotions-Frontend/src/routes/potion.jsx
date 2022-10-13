@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import PotionHelper from "../components/potionHelper";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import NewRecipeNameSetter from "../components/newRecipeNameSetter";
 
 const discoveryTexts = [
     "Yey! You have discovered a new recipe!",
@@ -75,11 +76,15 @@ const Potion = () => {
                             <PotionDetails potion={potion} />
                             {potion.brewingStatus === "Brew" && <IngredientAdder onHelp={onHelp} />}
                             {isNewDiscovery &&
-                                <div className="text-center text-success">
-                                    <strong>
-                                        {discoveryTexts[Math.floor(Math.random() * discoveryTexts.length)]}
-                                    </strong>
-                                </div>}
+                                <>
+                                    <div className="text-center text-success">
+                                        <strong>
+                                            {discoveryTexts[Math.floor(Math.random() * discoveryTexts.length)]}
+                                        </strong>
+                                    </div>
+                                    <NewRecipeNameSetter recipe={potion.recipe} />
+                                </>
+                            }
                         </div>
                     </Col>
 

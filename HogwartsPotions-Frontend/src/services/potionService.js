@@ -43,9 +43,25 @@ const getRecipes = async (potionId) => {
     return recipes;
 }
 
+const updateRecipeName = async (recipeId, recipeName) => {
+    const url = `/api/recipes/${recipeId}/rename`;
+    const options = {
+        method: "PATCH",
+        headers: {
+            'Content-Type': "application/json"
+        },
+        body: JSON.stringify(recipeName)
+    };
+    const result = await fetch(url, options)
+        .then(r => r.json());
+
+    return result;
+};
+
 export {
     getPotion,
     brewPotion,
     addIngredient,
-    getRecipes
+    getRecipes,
+    updateRecipeName
 };

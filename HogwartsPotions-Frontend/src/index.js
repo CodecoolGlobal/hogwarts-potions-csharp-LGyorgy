@@ -12,6 +12,7 @@ import Potion, {
     loader as potionLoader,
     action as potionAction,
 } from './routes/potion';
+import { action as recipeRenameAction } from './components/newRecipeNameSetter';
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
             element: <Potion />,
             loader: potionLoader,
             action: potionAction
+        },
+        {
+            path: "/recipes/:recipeId/rename",
+            action: recipeRenameAction
         },
       ]
     },
