@@ -136,6 +136,7 @@ public class PotionService : IPotionService
             .Include(p => p.Ingredients)
             .Include(p => p.Brewer)
                 .ThenInclude(s => s.Recipes)
+            .Include(p => p.Recipe)
             .FirstOrDefaultAsync(p => p.ID == potionId);
     }
 
