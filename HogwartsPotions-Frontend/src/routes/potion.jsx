@@ -9,6 +9,12 @@ import PotionHelper from "../components/potionHelper";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 
+const discoveryTexts = [
+    "Yey! You have discovered a new recipe!",
+    "Congratulations! This seems to be a completely new recipe!",
+    "Wow, you have discovered a new recipe! Great work!"
+]
+
 
 const loader = async ({ params }) => {
     return await getPotion(params.potionId);
@@ -24,9 +30,12 @@ const action = async ({ request, params }) => {
 }
 
 const Potion = () => {
+
     const potion = useLoaderData();
     const [recipes, setRecipes] = useState(null);
     const [showHelp, setShowHelp] = useState(false);
+    const [isNewDiscovery, setIsNewDiscovery] = useState(false);
+    const [prevStatus, setPrevStatus] = useState(potion.brewingStatus);
 
     useEffect(() => {
         if (showHelp) {
@@ -37,6 +46,11 @@ const Potion = () => {
         } else {
             setRecipes(null);
         }
+    }, [potion, showHelp]);
+
+    useEffect(() => {
+        setIsNewDiscovery(prevStatus !== "Discovery" && potion.brewingStatus === "Discovery");
+        setPrevStatus(potion.brewingStatus);
     }, [potion]);
 
     const onHelp = async () => {
@@ -60,6 +74,12 @@ const Potion = () => {
                         <div className="card my-3 p-3 sticky-top">
                             <PotionDetails potion={potion} />
                             {potion.brewingStatus === "Brew" && <IngredientAdder onHelp={onHelp} />}
+                            {isNewDiscovery &&
+                                <div className="text-center text-success">
+                                    <strong>
+                                        {discoveryTexts[Math.floor(Math.random() * discoveryTexts.length)]}
+                                    </strong>
+                                </div>}
                         </div>
                     </Col>
 
