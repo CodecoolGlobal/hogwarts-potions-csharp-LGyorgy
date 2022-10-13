@@ -185,7 +185,9 @@ public class PotionService : IPotionService
             query = query.Where(r => r.Ingredients.Contains(ingredient));
         }
 
-        query = query.Include(r => r.Ingredients);
+        query = query
+            .Include(r => r.Ingredients)
+            .Include(r => r.Brewer);
 
         var recipes = await query.ToListAsync();
         return recipes;
