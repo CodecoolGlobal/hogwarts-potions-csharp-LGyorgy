@@ -19,14 +19,14 @@ const Brew = () => {
 
     return (
         <>
-            <div className="card mx-auto mt-5 p-3" style={{"width": "50%"}}>
+            <div className="card shadow-sm mx-auto mt-5 p-3" style={{"width": "50%"}}>
                 <h3 className="text-center card-title">Create new potion</h3>
                 <RouterForm method="post">
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Student ID:</Form.Label>
                         <Form.Control name="studentId" type="number" placeholder="Enter student id" />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
+                    <Button className="shadow-sm" variant="primary" type="submit">
                         Start brewing a potion
                     </Button>
                 </RouterForm>

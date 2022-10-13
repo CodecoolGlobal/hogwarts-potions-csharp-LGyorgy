@@ -2,7 +2,7 @@ import { Card } from "react-bootstrap";
 
 const RecipeCard = ({ recipe }) => {
     return (
-        <Card>
+        <Card className="shadow-sm">
             <Card.Body>
                 <Card.Title>{recipe.name}</Card.Title>
                 <Card.Text>

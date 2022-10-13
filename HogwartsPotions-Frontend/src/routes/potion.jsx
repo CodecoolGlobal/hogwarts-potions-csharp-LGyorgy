@@ -72,7 +72,7 @@ const Potion = () => {
             <Container>
                 <Row className="mt-3">
                     <Col>
-                        <div className="card my-3 p-3 sticky-top">
+                        <div className="card shadow-sm my-3 p-3 sticky-top">
                             <PotionDetails potion={potion} />
                             {potion.brewingStatus === "Brew" && <IngredientAdder onHelp={onHelp} />}
                             {isNewDiscovery &&
@@ -92,7 +92,7 @@ const Potion = () => {
                         {potion.brewingStatus === "Brew" &&
                             <>
                                 <div className="text-center my-3 p-3">
-                                    <Button variant="secondary" className="mx-auto" onClick={onHelp}>
+                                    <Button variant="secondary" className="shadow-sm mx-auto" onClick={onHelp}>
                                         {showHelp
                                             ? "Hide recipes"
                                             : "Show compatible recipes"}

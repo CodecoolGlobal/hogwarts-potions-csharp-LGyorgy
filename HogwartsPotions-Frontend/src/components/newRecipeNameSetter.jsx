@@ -24,7 +24,7 @@ const NewRecipeNameSetter = ({ recipe }) => {
                 <Form.Label>Name of discovered recipe: </Form.Label>
                 <Form.Control value={value} onChange={e => setValue(e.target.value)} name="newRecipeName" type="text" placeholder="Enter recipe name" />
             </Form.Group>
-            <Button variant="primary" type="submit" disabled={fetcher.state !== "idle" ? true : false}>
+            <Button className="shadow-sm" variant="primary" type="submit" disabled={fetcher.state !== "idle" ? true : false}>
                 {fetcher.state !== "idle" && <Spinner
                     as="span"
                     animation="border"

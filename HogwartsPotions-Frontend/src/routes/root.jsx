@@ -7,7 +7,7 @@ import Nav from 'react-bootstrap/Nav';
 const Root = () => {
     return (
         <>
-            <Navbar bg="dark" variant="dark">
+            <Navbar className="shadow-sm" bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand>Hogwarts Potions</Navbar.Brand>
                     <Navbar.Collapse id="basic-navbar-nav">
