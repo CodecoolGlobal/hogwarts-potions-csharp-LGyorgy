@@ -31,12 +31,12 @@ const action = async ({ request, params }) => {
 }
 
 const Potion = () => {
-
     const potion = useLoaderData();
     const [recipes, setRecipes] = useState(null);
     const [showHelp, setShowHelp] = useState(false);
     const [isNewDiscovery, setIsNewDiscovery] = useState(false);
     const [prevStatus, setPrevStatus] = useState(potion.brewingStatus);
+    const [discoveryText] = useState(discoveryTexts[Math.floor(Math.random() * discoveryTexts.length)]);
 
     useEffect(() => {
         if (showHelp) {
@@ -79,7 +79,7 @@ const Potion = () => {
                                 <>
                                     <div className="text-center text-success">
                                         <strong>
-                                            {discoveryTexts[Math.floor(Math.random() * discoveryTexts.length)]}
+                                            {discoveryText}
                                         </strong>
                                     </div>
                                     <NewRecipeNameSetter recipe={potion.recipe} />
