@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import PotionHelper from "../components/potionHelper";
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 
 
 const loader = async ({ params }) => {
@@ -28,8 +29,14 @@ const Potion = () => {
     const [showHelp, setShowHelp] = useState(false);
 
     useEffect(() => {
-        setShowHelp(false);
-        setRecipes(null);
+        if (showHelp) {
+            (async () => {
+                const newRecipes = await getRecipes(potion.id);
+                setRecipes(newRecipes);
+            })();
+        } else {
+            setRecipes(null);
+        }
     }, [potion]);
 
     const onHelp = async () => {
@@ -52,12 +59,24 @@ const Potion = () => {
                     <Col>
                         <div className="card my-3 p-3 sticky-top">
                             <PotionDetails potion={potion} />
-                            {potion.brewingStatus == "Brew" && <IngredientAdder onHelp={onHelp} />}
+                            {potion.brewingStatus === "Brew" && <IngredientAdder onHelp={onHelp} />}
                         </div>
                     </Col>
+
                     <Col>
-                        {showHelp && <PotionHelper recipes={recipes} />}
+                        {potion.brewingStatus === "Brew" &&
+                            <>
+                                <div className="text-center my-3 p-3">
+                                    <Button variant="secondary" className="mx-auto" onClick={onHelp}>
+                                        {showHelp
+                                            ? "Hide recipes"
+                                            : "Show compatible recipes"}
+                                    </Button>
+                                </div>
+                                {showHelp && <PotionHelper recipes={recipes} />}
+                            </>}
                     </Col>
+
                 </Row>
             </Container>
         </>

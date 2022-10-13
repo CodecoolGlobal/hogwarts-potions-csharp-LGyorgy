@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 
-const IngredientAdder = ({ potion, onHelp }) => {
+const IngredientAdder = ({ potion }) => {
     const [ingredentName, setIngredientName] = useState("");
 
     const fetcher = useFetcher();
@@ -26,9 +26,6 @@ const IngredientAdder = ({ potion, onHelp }) => {
                         aria-hidden="true"
                     />}
                     {fetcher.state === "idle" ? "Add ingredient" : "Adding ingredient..."}
-                </Button>
-                <Button variant="secondary" className="float-end" onClick={onHelp}>
-                    Help
                 </Button>
             </fetcher.Form>
         </>
