@@ -13,7 +13,7 @@ const IngredientAdder = ({ potion }) => {
         <>
             <h5>Add ingredient</h5>
             <fetcher.Form id="ingredientAdderForm" onSubmit={() => setIngredientName("")} method="PUT">
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" controlId="formIngredientName">
                     <Form.Label>Ingredient: </Form.Label>
                     <Form.Control value={ingredentName} onChange={e => setIngredientName(e.target.value)} name="ingredientName" type="text" placeholder="Enter ingredient name" />
                 </Form.Group>
