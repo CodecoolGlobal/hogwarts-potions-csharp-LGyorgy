@@ -5,6 +5,7 @@ import PotionDetails from "../components/potionDetails";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import PotionHelper from "../components/potionHelper";
 
 
 const loader = async ({ params }) => {
@@ -27,15 +28,15 @@ const Potion = () => {
         <>
             <h2 className=" mt-3 text-center card-title">Potion details</h2>
             <Container>
-                <Row>
+                <Row className="mt-3">
                     <Col>
-                        <div className="card mt-3 p-3 sticky-top">
+                        <div className="card my-3 p-3 sticky-top">
                             <PotionDetails potion={potion} />
                             {potion.brewingStatus == "Brew" && <IngredientAdder />}
                         </div>
                     </Col>
                     <Col>
-                        {/* TODO: Column for recipes */}
+                        <PotionHelper />
                     </Col>
                 </Row>
             </Container>
