@@ -1,11 +1,12 @@
 import { useLoaderData } from "react-router-dom";
-import { addIngredient, getPotion } from "../services/potionService";
+import { addIngredient, getPotion, getRecipes } from "../services/potionService";
 import IngredientAdder from "../components/ingredientAdder";
 import PotionDetails from "../components/potionDetails";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import PotionHelper from "../components/potionHelper";
+import { useEffect, useState } from "react";
 
 
 const loader = async ({ params }) => {
@@ -23,6 +24,25 @@ const action = async ({ request, params }) => {
 
 const Potion = () => {
     const potion = useLoaderData();
+    const [recipes, setRecipes] = useState(null);
+    const [showHelp, setShowHelp] = useState(false);
+
+    useEffect(() => {
+        setShowHelp(false);
+        setRecipes(null);
+    }, [potion]);
+
+    const onHelp = async () => {
+        if (showHelp) {
+            setShowHelp(false)
+        } else {
+            if (recipes === null) {
+                const newRecipes = await getRecipes(potion.id);
+                setRecipes(newRecipes);
+            }
+            setShowHelp(true);
+        }
+    }
 
     return (
         <>
@@ -32,11 +52,11 @@ const Potion = () => {
                     <Col>
                         <div className="card my-3 p-3 sticky-top">
                             <PotionDetails potion={potion} />
-                            {potion.brewingStatus == "Brew" && <IngredientAdder />}
+                            {potion.brewingStatus == "Brew" && <IngredientAdder onHelp={onHelp} />}
                         </div>
                     </Col>
                     <Col>
-                        <PotionHelper />
+                        {showHelp && <PotionHelper recipes={recipes} />}
                     </Col>
                 </Row>
             </Container>

@@ -35,8 +35,17 @@ const addIngredient = async (potionId, ingredientName) => {
     return potion;
 }
 
+const getRecipes = async (potionId) => {
+    const url = `/api/potions/${potionId}/help`;
+    const recipes = await fetch(url)
+        .then(r => r.json());
+
+    return recipes;
+}
+
 export {
     getPotion,
     brewPotion,
-    addIngredient
+    addIngredient,
+    getRecipes
 };
