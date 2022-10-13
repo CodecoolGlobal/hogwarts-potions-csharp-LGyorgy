@@ -16,4 +16,6 @@ public interface IPotionService
     Task AddIngredient(Potion potion, IngredientDto ingredient);
     Task AddIngredient(Potion potion, Ingredient ingredient);
     Task<List<Recipe>> GetValidRecipes(List<Ingredient> potionIngredients);
+    Task<Recipe> GetRecipe(long recipeId);
+    Task UpdateRecipe(Recipe recipe);
 }

@@ -193,6 +193,23 @@ public class PotionService : IPotionService
         return recipes;
     }
 
+    public async Task<Recipe> GetRecipe(long recipeId)
+    {
+        return await _context.Recipes
+            .Include(p => p.Ingredients)
+            .Include(p => p.Brewer)
+            .FirstOrDefaultAsync(r => r.ID == recipeId);
+    }
+
+    public async Task UpdateRecipe(Recipe recipe)
+    {
+        if (_context.Entry(recipe).State == EntityState.Detached)
+        {
+            _context.Entry(recipe).State = EntityState.Modified;
+        }
+        await _context.SaveChangesAsync();
+    }
+
     private async Task<Recipe> GetRecipeByIngredients(List<Ingredient> ingredients)
     {
         if (ingredients.Count != MaxIngredientsForPotions)

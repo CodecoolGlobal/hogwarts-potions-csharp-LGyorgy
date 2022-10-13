@@ -124,5 +124,22 @@ namespace HogwartsPotions.Controllers
 
             return Ok(recipes);
         }
+
+        [HttpPatch("/api/recipes/{recipeId}/rename")]
+        public async Task<ActionResult<List<Recipe>>> RenameRecipe(long recipeId, [FromBody] string name)
+        {
+            var recipe = await _potionService.GetRecipe(recipeId);
+
+            if (recipe is null)
+            {
+                return NotFound($"There's no recipe with the ID of {recipeId}.");
+            }
+
+            recipe.Name = name;
+
+            await _potionService.UpdateRecipe(recipe);
+
+            return Ok();
+        }
     }
 }
