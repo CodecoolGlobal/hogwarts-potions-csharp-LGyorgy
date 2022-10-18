@@ -6,6 +6,18 @@ The backend API is implemented in ASP.NET framework, and it's purpose is to give
 
 To complement this API, there's a separate node.js server, which runs a React SPA, utilizing the API endpoints to present the resources to the user, more specifically to conduct the brewing of potions.
 
+## Built With
+
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white)
+![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
+![.Net](https://img.shields.io/badge/ASP.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
+
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+
+
 ## Installation
 
 You will need to have .NET installed on your system to be able to run this application. If you need help with installing .NET, see [Install .NET Core](https://learn.microsoft.com/en-us/dotnet/core/install/windows).
